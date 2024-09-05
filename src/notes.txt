@@ -1,0 +1,35 @@
+Projects ->
+ -list of Projects 
+ .addProject(name)
+ .deleteProject(name)
+
+Project ->
+ -name
+ -list of Todo Items
+ .addTodo(newTodo)
+ .deleteTodo(todo)
+ .changeName(newName)
+
+Todo Item -> (form can restict input e.g. text lengths)
+ -title
+ -description
+ -dueDate
+ -priority
+ -done?
+
+ UI: 
+ -side bar:
+ -all todos
+ -upcoming todos
+ -completed todos
+ -default project
+ -add project button
+
+Possible features:
+ -list by priority
+ -list by due date
+ -list alphabetically
+ -show overdue ui signal
+ -add/move todo item to project
+ -store to local storage
+ -should be able to convert projects to json and vice versa
