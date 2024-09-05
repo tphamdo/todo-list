@@ -9,17 +9,19 @@ export default function ScreenController() {
     const projectsDiv = document.querySelector("#projects-container");
     const newProjectButton = document.querySelector("#newProj");
 
-    let selectedProjName = DEFAULT_PROJECT;
+    let selectedProjectName = DEFAULT_PROJECT;
 
     // Initial dummy data
     app.addProject(DEFAULT_PROJECT);
+    app.addTodo(DEFAULT_PROJECT, todoList[0]);
+    app.addTodo(DEFAULT_PROJECT, todoList[1]);
+    app.addTodo(DEFAULT_PROJECT, todoList[2]);
+    app.addTodo(DEFAULT_PROJECT, todoList[0]);
+    app.addTodo(DEFAULT_PROJECT, todoList[1]);
+    app.addTodo(DEFAULT_PROJECT, todoList[2]);
     app.addProject("project 2");
-    app.addTodo(DEFAULT_PROJECT, todoList[0]);
-    app.addTodo(DEFAULT_PROJECT, todoList[1]);
-    app.addTodo(DEFAULT_PROJECT, todoList[2]);
-    app.addTodo(DEFAULT_PROJECT, todoList[0]);
-    app.addTodo(DEFAULT_PROJECT, todoList[1]);
-    app.addTodo(DEFAULT_PROJECT, todoList[2]);
+    app.addTodo("project 2", todoList[2]);
+    console.log("yo");
 
     const updateScreen = () => {
         // clear divs
@@ -30,10 +32,12 @@ export default function ScreenController() {
         projects.forEach(project => {
             projectsDiv.appendChild(createProjectElement(project));
         });
+        projectsDiv.addEventListener('click', handleProjectClick);
 
-        let proj = app.getProject(selectedProjName);
+        let proj = app.getProject(selectedProjectName);
         proj.todos.forEach(todo => {
-            todoDiv.appendChild(createTodoElement(todo));
+            const div = createTodoElement(todo);
+            todoDiv.appendChild(div);
         });
     }
 
@@ -51,15 +55,26 @@ export default function ScreenController() {
 
         const p = document.createElement('p');
         p.textContent = project.name;
+        p.dataset.name = project.name;
         div.appendChild(p);
         return div;
     }
 
     function handleNewProject(event) {
-        console.log(event.target)
+        kconsole.log(event.target)
         console.log(event.currentTarget)
 
         app.addProject("random name");
+        updateScreen();
+    }
+
+    function handleProjectClick(event) {
+        console.log("handle project click");
+        const projectName = event.target.dataset.name;
+        // Make sure I've clicked a project and not any gaps between
+        if (!projectName) return;
+
+        selectedProjectName = projectName;
         updateScreen();
     }
 
