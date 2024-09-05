@@ -3,20 +3,31 @@
   <head>
     <meta charset="UTF-8">
     <title>Todo-List</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
   </head>
   <body>
     <div class="container">
-      <div class="header">
-        <h1>TODO</h1>
-      </div>
-      <div class="sidebar">
-        <button id="allTodos">All</button>
-        <div id="projects-container">
+      <header>
+        <h1>ToDo</h1>
+      </header>
+      <nav class="sidebar">
+        <div id="main-nav-items">
+          <button id="allTodos">All</button>
+          <button id="today">Today</button>
+          <button id="week">Week</button>
+          <button id="completed">Completed</button>
         </div>
-        <button id="newProj">New project</button>
-      </div>
+        <div id="projects-div">
+          <h3 class="nav-header">Projects</h3>
+          <div id="projects-container">
+          </div>
+          <button id="newProj">New project</button>
+        </div>
+      </nav>
       <div class="content">
-        <div id="project-container">
+        <div id="title-container">
         </div>
         <div id="todo-container">
         </div>

@@ -28,12 +28,14 @@ export default function ScreenController() {
         projectsDiv.textContent = '';
         todoDiv.textContent = '';
 
+        // update projects
         let projects = app.getProjects();
         projects.forEach(project => {
             projectsDiv.appendChild(createProjectElement(project));
         });
         projectsDiv.addEventListener('click', handleProjectClick);
 
+        // update content
         let proj = app.getProject(selectedProjectName);
         proj.todos.forEach(todo => {
             const div = createTodoElement(todo);
@@ -53,10 +55,10 @@ export default function ScreenController() {
     function createProjectElement(project) {
         const div = document.createElement('div');
 
-        const p = document.createElement('p');
-        p.textContent = project.name;
-        p.dataset.name = project.name;
-        div.appendChild(p);
+        const b = document.createElement('button');
+        b.textContent = project.name;
+        b.dataset.name = project.name;
+        div.appendChild(b);
         return div;
     }
 

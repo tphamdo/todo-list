@@ -37,28 +37,78 @@ p, h1, h2, h3, h4, h5, h6 {
  * Custom Styling
  */
 
-.container {
-  display: grid;
-  grid-template-columns: 250px 1fr;
-  grid-template-rows: 80px 1fr;
-  grid-template-areas:
-  "header header"
-  "sidebar content";
+:root {
+  --light-grey: #F7F7F7;
+  --black: #000000;
+  --navbar-width: 250px;
+  --header-height: 70px;
 }
 
-.header {
-  grid-area: header;
-  padding: 16px;
-  background-color: blue;
+body {
+  font-family: 'Roboto', sans-serif, serif;
 }
 
-.sidebar {
-  grid-area: sidebar;
-  padding: 16px;
-  background-color: red;
+button {
+    cursor:pointer;
+}
+
+header {
+  padding: 0px 24px;
+  height: var(--header-height);
+  background-color: var(--black);
+  color: white;
+  display: flex;
+  align-items: center;
+}
+
+nav {
+  /* grid-area: sidebar; */
+  padding: 32px 24px;
+  background-color: var(--light-grey);
+  position: fixed;
+  top: var(--header-height);
+  height: 100%;
+  width: var(--navbar-width);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+#projects-container {
+  display: flex;
+  flex-direction: column;
+  /* gap: 8px; */
+  /* margin-bottom: 24px; */
+}
+
+#main-nav-items {
+  margin-bottom: 24px;
+}
+
+nav button {
+  /* background-color: white; */
+  background-color: inherit;
+  border: none;
+  width: 100%;
+  text-align: left;
+  border-radius: 8px;
+  /* padding:  */
+  padding: 2px;
+}
+
+nav button:hover {
+  font-weight: 500;
+}
+
+nav button:hover::before {
+  content: "> "
+}
+
+.nav-header {
+  margin-bottom: 8px;
 }
 
 .content {
-  grid-area: content;
+  margin-left: var(--navbar-width);
   padding: 16px;
 }
