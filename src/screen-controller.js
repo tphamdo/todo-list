@@ -61,9 +61,10 @@ export default function ScreenController() {
     }
 
     function handleNewProject(event) {
-        kconsole.log(event.target)
+        console.log(event.target)
         console.log(event.currentTarget)
 
+        // update with input
         app.addProject("random name");
         updateScreen();
     }
