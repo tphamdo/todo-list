@@ -24,6 +24,4 @@ export default class Project {
     }
 
     get todos() { return this.#todos; }
-    // get name() { return this.name; }
-    // set name(value) { this.name = value; }
 }

@@ -51,5 +51,16 @@ export default function TodoManager() {
 
     const getProjects = () => projects;
 
-    return { addProject, deleteProject, getProjects, addTodo, deleteTodo };
+    const getProject = function(projectName) {
+        if (!projectName) return;
+
+        let idx = projects.findIndex(p => p.name == projectName)
+
+        // break if project is not found
+        if (idx === -1) return;
+
+        return projects[idx]
+    }
+
+    return { addProject, deleteProject, getProjects, addTodo, deleteTodo, getProject };
 }
