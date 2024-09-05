@@ -62,5 +62,16 @@ export default function TodoManager() {
         return projects[idx]
     }
 
-    return { addProject, deleteProject, getProjects, addTodo, deleteTodo, getProject };
+    const getAllTodos = () => {
+        let todos = []
+        projects.forEach(project => {
+            todos.push(...project.todos);
+        });
+        return todos;
+    }
+
+    return {
+        addProject, deleteProject, getProjects, addTodo,
+        deleteTodo, getProject, getAllTodos,
+    };
 }

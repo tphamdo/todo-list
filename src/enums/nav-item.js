@@ -5,11 +5,11 @@
 */
 
 const NavItem = Object.freeze({
-    All:   Symbol("all"),
-    Today:  Symbol("today"),
-    Week:  Symbol("week"),
-    Completed:  Symbol("completed"),
-    Project:  Symbol("project"), // a project
+    ALL:   Symbol.for("All"),
+    TODAY:  Symbol.for("Today"),
+    WEEK:  Symbol.for("Week"),
+    COMPLETED:  Symbol.for("Completed"),
+    PROJECT:  Symbol.for("Project"), // a project
 });
 
 export default NavItem

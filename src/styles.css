@@ -49,7 +49,7 @@ body {
 }
 
 button {
-    cursor:pointer;
+  cursor:pointer;
 }
 
 header {
@@ -92,16 +92,42 @@ nav button {
   width: 100%;
   text-align: left;
   border-radius: 8px;
-  /* padding:  */
-  padding: 2px;
+  /* padding: 2px; */
+  display: flex;
+  /* border: 1px solid black; */
 }
 
 nav button:hover {
   font-weight: 500;
 }
 
+.right-button-panel {
+  height: 24px;
+  width: 24px;
+  /* border: 1px solid red; */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.right-button-panel {
+  visibility: hidden;
+  margin-left: auto;
+}
+
+button:hover .right-button-panel {
+  visibility: visible;
+}
+
+button .right-button-panel:hover {
+  font-weight: 1000;
+  color: red;
+}
+
 nav button:hover::before {
-  content: "> "
+  content: "> ";
+  /* preserve whitespace from removal due to flexbox */
+  white-space: pre-wrap;
 }
 
 .nav-header {
