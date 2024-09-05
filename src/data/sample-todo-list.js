@@ -1,4 +1,4 @@
-import Priority from "./priority.js"
+import Priority from "../enums/priority.js"
 
 const todoList = [
     {

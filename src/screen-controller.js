@@ -1,5 +1,5 @@
 import TodoController from "./todo-controller.js"
-import todoList from "./sample-todo-list.js" 
+import todoList from "./data/sample-todo-list.js" 
 
 export default function ScreenController() {
     const app = TodoController();
