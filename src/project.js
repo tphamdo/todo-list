@@ -6,7 +6,7 @@ export default class Project {
         this.name = name;
     }
 
-    addTodo(todo) { 
+    addTodo(todo) {
         if (!todo) return;
         let todoWithId = Object.assign(todo, { id: this.#nextTodoId++ })
         this.#todos.push(todoWithId);
@@ -15,7 +15,7 @@ export default class Project {
     deleteTodo(todoId) {
         if (!todoId) return;
 
-        let idx = this.#todos.findIndex( t => t.id === todoId) 
+        let idx = this.#todos.findIndex( t => t.id === todoId)
 
         // break if todo is not found
         if (idx === -1) return;

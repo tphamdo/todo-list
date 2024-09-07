@@ -12,6 +12,7 @@ export default function TodoManager() {
 
         let project = new Project(name);
         projects.push(project);
+        return project;
     }
 
     const deleteProject = function(projectName) {
@@ -25,18 +26,23 @@ export default function TodoManager() {
         projects.splice(idx, 1);
     }
 
-    const addTodo = function(projectName, todo) {
-        if (!projectName || !todo) return;
+    const addTodo = function(todo) {
+        if (!todo) return;
 
-        let idx = projects.findIndex(p => p.name == projectName)
+        let idx = projects.findIndex(p => p.name == todo.projectName);
 
-        // break if project is not found
-        if (idx === -1) return;
+        // create new project if it does not yet exist
+        if (idx === -1) {
+            console.log(todo.projectName);
+            let project = addProject(todo.projectName);
+            project.addTodo(new Todo(...Object.values(todo)));
+            return;
+        }
 
         let project = projects[idx]
         project.addTodo(new Todo(...Object.values(todo)));
     }
-     
+
     const deleteTodo = function(projectName, todoId) {
         if (!projectName || !todoId) return;
 

@@ -17,10 +17,10 @@ export default function ScreenController() {
     const todayButton = document.querySelector("#today");
     const weekButton = document.querySelector("#week");
     const completedButton = document.querySelector("#completed");
-    const dialog = document.querySelector(".dialog");
+    const dialog = document.querySelector(".new-todo-dialog");
     const overlay = document.querySelector(".overlay");
     const selectForProject = document.querySelector("select#project");
-    const dueDate = document.querySelector(".dialog #due-date");
+    const dueDate = document.querySelector(".new-todo-dialog #due-date");
     const now = new Date();
     let defaultDueDate = new Date()
     defaultDueDate.setDate(now.getDate() + 7);
@@ -30,16 +30,12 @@ export default function ScreenController() {
     let selectedProjectName = null;
 
     // Initial dummy data
+
     app.addProject(DEFAULT_PROJECT);
-    app.addTodo(DEFAULT_PROJECT, todoList[0]);
-    app.addTodo(DEFAULT_PROJECT, todoList[1]);
-    app.addTodo(DEFAULT_PROJECT, todoList[2]);
-    app.addTodo(DEFAULT_PROJECT, todoList[0]);
-    app.addTodo(DEFAULT_PROJECT, todoList[1]);
-    app.addTodo(DEFAULT_PROJECT, todoList[2]);
-    app.addProject("project 2");
-    app.addTodo("project 2", todoList[2]);
-    console.log("yo");
+    todoList.forEach(todo => {
+        console.log(todo);
+        app.addTodo(todo);
+    });
 
     function updateScreen() {
         // clear divs
@@ -157,6 +153,9 @@ export default function ScreenController() {
     function handleNewTodoClick(event) {
         console.log("handle new todo");
 
+        if (selectedNavItem === NavItem.PROJECT) {
+            selectForProject.value = selectedProjectName;
+        }
         overlay.classList.add("active");
         dialog.classList.add("active");
     }

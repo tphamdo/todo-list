@@ -1,26 +1,57 @@
-import Priority from "../enums/priority.js"
+import Priority from "../enums/priority.js";
+import { addDays } from "date-fns";
+const today = new Date()
+const in3Days = addDays(new Date(), 3);
+const nextWeek = addDays(new Date(), 7);
 
 const todoList = [
     {
-        title: "A",
-        description: "A descr", 
-        dueDate: "9-23-2024",
-        priority: Priority.MEDIUM,
+        title: "Go on a walk",
+        description: "",
+        dueDate: today,
+        priority: Priority.HIGH,
         done: false,
+        projectName: "Habits",
     },
     {
-        title: "B",
-        description: "B desciprtion", 
-        dueDate: "9-24",
-        priority: Priority.LOW,
-        done: false,
-    },
-    {
-        title: "C",
-        description: "C description", 
-        dueDate: "9-25",
+        title: "Meditate for 10 minutes",
+        description: "",
+        dueDate: today,
         priority: Priority.HIGH,
         done: true,
+        projectName: "Habits",
+    },
+    {
+        title: "Go to the gym",
+        description: "",
+        dueDate: today,
+        priority: Priority.HIGH,
+        done: false,
+        projectName: "Habits"
+    },
+    {
+        title: "Take out the trash",
+        description: "",
+        dueDate: in3Days,
+        priority: Priority.MEDIUM,
+        done: false,
+        projectName: "Chores"
+    },
+    {
+        title: "Do the dishes",
+        description: "",
+        dueDate: today,
+        priority: Priority.MEDIUM,
+        done: false,
+        projectName: "Chores"
+    },
+    {
+        title: "Replace the air filter",
+        description: "",
+        dueDate: today,
+        priority: Priority.HIGH,
+        done: false,
+        projectName: "Chores"
     },
 ];
 
