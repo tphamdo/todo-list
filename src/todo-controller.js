@@ -35,6 +35,8 @@ export default function TodoManager() {
         if (idx === -1) {
             console.log(todo.projectName);
             let project = addProject(todo.projectName);
+            console.log(todo);
+            console.log(Object.values(todo));
             project.addTodo(new Todo(...Object.values(todo)));
             return;
         }

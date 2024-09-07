@@ -1,11 +1,11 @@
-import TodoController from "./todo-controller.js"
-import todoList from "./data/sample-todo-list.js"
-import NavItem from "./enums/nav-item.js"
-import Priority from "./enums/priority.js"
+import TodoController from "./todo-controller.js";
+import todoList from "./data/sample-todo-list.js";
+import NavItem from "./enums/nav-item.js";
+import Priority from "./enums/priority.js";
+import { format } from "date-fns";
 
 export default function ScreenController() {
     const app = TodoController();
-    const DEFAULT_PROJECT = "Default";
 
     const projectsDiv = document.querySelector("#projects-container");
     const todosDiv = document.querySelector("#todo-container");
@@ -21,19 +21,13 @@ export default function ScreenController() {
     const overlay = document.querySelector(".overlay");
     const selectForProject = document.querySelector("select#project");
     const dueDate = document.querySelector(".new-todo-dialog #due-date");
-    const now = new Date();
-    let defaultDueDate = new Date()
-    defaultDueDate.setDate(now.getDate() + 7);
-    // defaultDate.setDate(now.getDate() + 7);
 
+    let defaultDueDate = new Date()
     let selectedNavItem = NavItem.ALL;
     let selectedProjectName = null;
 
     // Initial dummy data
-
-    app.addProject(DEFAULT_PROJECT);
     todoList.forEach(todo => {
-        console.log(todo);
         app.addTodo(todo);
     });
 
@@ -111,10 +105,23 @@ export default function ScreenController() {
 
     function createTodoElement(todo) {
         const div = document.createElement('div');
+        const title = document.createElement('p');
+        const dueDate = document.createElement('p');
+        const remove = document.createElement('button');
 
-        const p = document.createElement('p');
-        p.textContent = todo.title;
-        div.appendChild(p);
+        console.log(todo);
+        div.classList.add("todo-item");
+        div.dataset.projectName = todo.projectName;
+        div.dataset.id = todo.id;
+        title.textContent = todo.title;
+        dueDate.textContent = format(todo.dueDate, "MM/dd/yyyy");
+        dueDate.classList.add("due-date");
+        remove.textContent = "R";
+        remove.addEventListener('click', handleDeleteTodoItem);
+        div.appendChild(title);
+        div.appendChild(dueDate);
+        div.appendChild(remove);
+
         return div;
     }
 
@@ -151,8 +158,8 @@ export default function ScreenController() {
     }
 
     function handleNewTodoClick(event) {
-        console.log("handle new todo");
-
+        /* Use the currently selected project as the default
+        project choice */
         if (selectedNavItem === NavItem.PROJECT) {
             selectForProject.value = selectedProjectName;
         }
@@ -166,16 +173,16 @@ export default function ScreenController() {
         let title = event.target.elements.title.value;
         let dueDate = event.target.elements['due-date'].value;
         let projectName = event.target.elements.project.value;
-        app.addTodo(projectName,
-            {
-                title: title,
-                description: "temp description",
-                dueDate: dueDate,
-                priority: Priority.MEDIUM,
-                done: false,
-            }
-        );
+        let todo = {
+            title: title,
+            description: "temp description",
+            dueDate: dueDate,
+            priority: Priority.MEDIUM,
+            done: false,
+            projectName: projectName,
+        }
 
+        app.addTodo(todo);
         overlay.classList.remove("active");
         dialog.classList.remove("active");
         defaultDueDate = new Date(dueDate);
@@ -190,9 +197,9 @@ export default function ScreenController() {
     function handleNewProjectClick(event) {
         let form = document.createElement('form');
         let input = document.createElement('input');
-        // overlay allows users to click out of form
-        // overlay used as a sibling of the form so that the
-        // z-index of the overlay and form can be used together
+        /* overlay allows users to click out of form
+        overlay used as a sibling of the form so that the
+        z-index of the overlay and form can be used together */
         let overlay = document.createElement('div');
 
         form.classList.add("new-project");
@@ -212,8 +219,6 @@ export default function ScreenController() {
         overlay.classList.add("active");
 
         function handleCancelNewProject(event) {
-            console.log("cancelNewProject");
-
             // remove overlay and form
             projectsDiv.removeChild(projectsDiv.lastChild);
             projectsDiv.removeChild(projectsDiv.lastChild);
@@ -235,10 +240,9 @@ export default function ScreenController() {
     }
 
     function handleProjectClick(event) {
-        console.log("handle project click");
         const projectName = event.target.dataset.name;
         /* Make sure I've clicked a project and not any gaps in
-         * between or the delete button */
+        between or the delete button */
         if (!projectName) return;
 
         selectedNavItem = NavItem.PROJECT;
@@ -246,9 +250,19 @@ export default function ScreenController() {
         updateScreen();
     }
 
+    function handleDeleteTodoItem(event) {
+        const projectName = event.currentTarget.parentElement.dataset.projectName;
+        const id = event.currentTarget.parentElement.dataset.id;
+        console.log("proj:", projectName, typeof(projectName));
+        console.log("id:", id, typeof(id));
+
+        console.log("todos:", app.getProject("Habits").todos);
+        app.deleteTodo(projectName, id);
+        console.log("todos:", app.getProject("Habits").todos);
+        updateScreen();
+    }
+
     function handleDeleteProject(event) {
-        console.log("handleDeleteProject");
-        console.log(event.currentTarget);
         let projectName = event.currentTarget.parentElement.dataset.name;
 
         app.deleteProject(projectName);
@@ -271,10 +285,6 @@ export default function ScreenController() {
     newProjectButton.addEventListener('click', handleNewProjectClick);
     allButton.addEventListener('click', handleAllClick);
 
-    // <button id="allTodos">All</button>
-    // <button id="today">Today</button>
-    // <button id="week">Week</button>
-    // <button id="completed">Completed</button>
     // Initial render
     updateScreen();
 }
