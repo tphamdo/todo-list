@@ -1,12 +1,12 @@
 export default class Todo {
-    constructor(title, descr, dueDate, priority, done, projectName='') {
-        this.title = title;
-        this.descr = descr;
-        this.dueDate = dueDate;
-        this.priority = priority;
-        this.done = done;
-        this.projectName = projectName
-        this.dateAdded = new Date();
+    constructor(todoJSON) {
+        this.title = todoJSON.title;
+        this.descr = todoJSON.descr;
+        this.dueDate = new Date(todoJSON.dueDate);
+        this.priority = todoJSON.priority;
+        this.done = todoJSON.done;
+        this.projectName = todoJSON.projectName;
+        this.dateAdded = todoJSON.dateAdded ? new Date(todoJSON.dateAdded) : new Date();
     }
 
     edit(todoJSON) {

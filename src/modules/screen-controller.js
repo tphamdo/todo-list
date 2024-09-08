@@ -1,5 +1,4 @@
 import TodoController from "./todo-controller.js";
-import todoList from "./data/sample-todo-list.js";
 import NavItem from "./enums/nav-item.js";
 import Priority from "./enums/priority.js";
 import { format } from "date-fns";
@@ -29,10 +28,8 @@ export default function ScreenController() {
     let selectedNavItem = NavItem.ALL;
     let selectedProjectName = null;
 
-    // Initial dummy data
-    todoList.forEach(todo => {
-        app.addTodo(todo);
-    });
+    // Load data from local storage or if none load dummy data
+    app.init();
 
     function updateScreen() {
         // clear divs
