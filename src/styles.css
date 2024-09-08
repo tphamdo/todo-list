@@ -212,7 +212,7 @@ button.add-todo {
   border-radius: 9999px;
 }
 
-.new-todo-dialog {
+.todo-dialog {
   display: none;
   position: fixed;
   top: 50%;
@@ -236,7 +236,7 @@ button.add-todo {
   }
 }
 
-.new-todo-dialog.active {
+.todo-dialog.active {
   display: block;
   transform: translate(-50%, -50%) scale(1);
   transition: 0.2s ease-in-out;

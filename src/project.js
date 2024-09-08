@@ -13,14 +13,25 @@ export default class Project {
     }
 
     deleteTodo(todoId) {
-        if (!todoId) return;
+        if (!todoId && todoId !== 0) return;
 
-        let idx = this.#todos.findIndex( t => t.id == todoId)
+        let idx = this.#todos.findIndex(t => t.id == todoId)
 
         // break if todo is not found
         if (idx === -1) return;
 
         this.#todos.splice(idx, 1);
+    }
+
+    getTodo(todoId) {
+        if (!todoId && todoId !== 0) return null;
+
+        let idx = this.#todos.findIndex(t => t.id == todoId)
+
+        // return null if todo is not found
+        if (idx === -1) return null;
+
+        return this.#todos[idx];
     }
 
     get todos() { return this.#todos; }

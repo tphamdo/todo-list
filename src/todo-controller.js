@@ -26,23 +26,20 @@ export default function TodoManager() {
         projects.splice(idx, 1);
     }
 
-    const addTodo = function(todo) {
-        if (!todo) return;
+    const addTodo = function(todoJSON) {
+        if (!todoJSON) return;
 
-        let idx = projects.findIndex(p => p.name == todo.projectName);
+        let idx = projects.findIndex(p => p.name == todoJSON.projectName);
 
         // create new project if it does not yet exist
         if (idx === -1) {
-            console.log(todo.projectName);
-            let project = addProject(todo.projectName);
-            console.log(todo);
-            console.log(Object.values(todo));
-            project.addTodo(new Todo(...Object.values(todo)));
+            let project = addProject(todoJSON.projectName);
+            project.addTodo(new Todo(...Object.values(todoJSON)));
             return;
         }
 
         let project = projects[idx]
-        project.addTodo(new Todo(...Object.values(todo)));
+        project.addTodo(new Todo(...Object.values(todoJSON)));
     }
 
     const deleteTodo = function(projectName, todoId) {
@@ -57,15 +54,48 @@ export default function TodoManager() {
         project.deleteTodo(todoId);
     }
 
-    const getProjects = () => projects;
-
-    const getProject = function(projectName) {
-        if (!projectName) return;
+    const getTodo = function(projectName, todoId) {
+        if (!projectName || !todoId) return null;
 
         let idx = projects.findIndex(p => p.name == projectName)
 
         // break if project is not found
-        if (idx === -1) return;
+        if (idx === -1) return null;
+
+        let project = projects[idx]
+        return project.getTodo(todoId);
+    }
+
+    const editTodo = function(projectName, todoId, updatedTodoJSON) {
+        const curTodo = getTodo(projectName, todoId);
+        if (!curTodo) return;
+
+        const targetProjectName = updatedTodoJSON.projectName;
+        if (targetProjectName && curTodo.projectName !== targetProjectName) {
+            console.log("here");
+            const targetProject = getProject(targetProjectName);
+            const curProject = getProject(curTodo.projectName)
+            if (!targetProject || !curProject) return;
+
+            curProject.deleteTodo(todoId);
+            curTodo.edit(updatedTodoJSON);
+            targetProject.addTodo(curTodo);
+        } else {
+            curTodo.edit(updatedTodoJSON);
+        }
+
+        console.log(this.projects);
+    }
+
+    const getProjects = () => projects;
+
+    const getProject = function(projectName) {
+        if (!projectName) return null;
+
+        let idx = projects.findIndex(p => p.name == projectName)
+
+        // break if project is not found
+        if (idx === -1) return null;
 
         return projects[idx]
     }
@@ -80,6 +110,7 @@ export default function TodoManager() {
 
     return {
         addProject, deleteProject, getProjects, addTodo,
-        deleteTodo, getProject, getAllTodos,
+        deleteTodo, getProject, getAllTodos, getTodo,
+        editTodo
     };
 }

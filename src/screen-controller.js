@@ -10,17 +10,19 @@ export default function ScreenController() {
     const projectsDiv = document.querySelector("#projects-container");
     const todosDiv = document.querySelector("#todo-container");
     const titleDiv = document.querySelector("#title-container");
-    const newTodoButton = document.querySelector(".add-todo");
-    const newTodoForm = document.querySelector("#newTodoForm");
-    const newProjectButton = document.querySelector(".add-project");
     const allButton = document.querySelector("#allTodos");
-    const todayButton = document.querySelector("#today");
-    const weekButton = document.querySelector("#week");
-    const completedButton = document.querySelector("#completed");
-    const dialog = document.querySelector(".new-todo-dialog");
+    // const todayButton = document.querySelector("#today");
+    // const weekButton = document.querySelector("#week");
+    // const completedButton = document.querySelector("#completed");
+    const newTodoButton = document.querySelector(".add-todo");
+    const newProjectButton = document.querySelector(".add-project");
+    const todoForm = document.querySelector("#todo-form");
+    const todoDialog = document.querySelector(".todo-dialog");
     const overlay = document.querySelector(".overlay");
-    const selectForProject = document.querySelector("select#project");
-    const dueDate = document.querySelector(".new-todo-dialog #due-date");
+    const formHeader = document.querySelector("#todo-form .header");
+    const formTitle = document.querySelector("#todo-form #title");
+    const formDueDate = document.querySelector("#todo-form #due-date");
+    const formProject = document.querySelector("#todo-form #project");
 
     let defaultDueDate = new Date()
     let selectedNavItem = NavItem.ALL;
@@ -35,11 +37,11 @@ export default function ScreenController() {
         // clear divs
         projectsDiv.textContent = '';
         todosDiv.textContent = '';
-        selectForProject.textContent = '';
+        formProject.textContent = '';
 
         updateProjects();
         updateContent();
-        dueDate.valueAsDate = defaultDueDate;
+        formDueDate.valueAsDate = defaultDueDate;
     }
 
     function updateContent() {
@@ -51,7 +53,7 @@ export default function ScreenController() {
         let projects = app.getProjects();
         projects.forEach(project => {
             projectsDiv.appendChild(createProjectElement(project));
-            selectForProject.appendChild(
+            formProject.appendChild(
                 createSelectOptionElement(project.name));
         });
         projectsDiv.addEventListener('click', handleProjectClick);
@@ -84,6 +86,7 @@ export default function ScreenController() {
         switch(selectedNavItem) {
             case NavItem.ALL:
                 todos = app.getAllTodos();
+                console.log(todos);
                 break;
             case NavItem.TODAY:
                 break;
@@ -108,18 +111,24 @@ export default function ScreenController() {
         const title = document.createElement('p');
         const dueDate = document.createElement('p');
         const remove = document.createElement('button');
+        const edit = document.createElement('button');
 
-        console.log(todo);
+        // console.log(todo);
         div.classList.add("todo-item");
         div.dataset.projectName = todo.projectName;
         div.dataset.id = todo.id;
         title.textContent = todo.title;
         dueDate.textContent = format(todo.dueDate, "MM/dd/yyyy");
         dueDate.classList.add("due-date");
+        edit.textContent = "E";
+        edit.addEventListener('click', handleEditTodoClick);
+        edit.classList.add("edit");
         remove.textContent = "R";
         remove.addEventListener('click', handleDeleteTodoItem);
+        remove.classList.add("remove");
         div.appendChild(title);
         div.appendChild(dueDate);
+        div.appendChild(edit);
         div.appendChild(remove);
 
         return div;
@@ -158,22 +167,35 @@ export default function ScreenController() {
     }
 
     function handleNewTodoClick(event) {
+        todoForm.addEventListener('submit', handleSubmitNewTodo);
+        todoForm.removeEventListener('submit', handleSubmitEditTodo);
+
+        overlay.classList.add("active");
+        todoDialog.classList.add("active");
+        formHeader.textContent = "New ToDo";
+        formTitle.value = "";
+        // formDueDate.value = "";
         /* Use the currently selected project as the default
         project choice */
         if (selectedNavItem === NavItem.PROJECT) {
-            selectForProject.value = selectedProjectName;
+            formProject.value = selectedProjectName;
+        } else {
+            formProject.value = '';
+            const projects = app.getProjects()
+            if (projects.length) {
+                formProject.value = projects[0].name;
+            }
         }
-        overlay.classList.add("active");
-        dialog.classList.add("active");
+
     }
 
     function handleSubmitNewTodo(event) {
         event.preventDefault();
 
-        let title = event.target.elements.title.value;
-        let dueDate = event.target.elements['due-date'].value;
-        let projectName = event.target.elements.project.value;
-        let todo = {
+        const title = event.target.elements.title.value;
+        const dueDate = event.target.elements['due-date'].value;
+        const projectName = event.target.elements.project.value;
+        const todo = {
             title: title,
             description: "temp description",
             dueDate: dueDate,
@@ -184,15 +206,79 @@ export default function ScreenController() {
 
         app.addTodo(todo);
         overlay.classList.remove("active");
-        dialog.classList.remove("active");
+        todoDialog.classList.remove("active");
         defaultDueDate = new Date(dueDate);
         updateScreen();
     }
 
-    function handleCancelNewTodo(event) {
+    function handleCancelTodoDialog(event) {
         overlay.classList.remove("active");
-        dialog.classList.remove("active");
+        todoDialog.classList.remove("active");
+        todoDialog.removeAttribute("data-projectName");
+        todoDialog.removeAttribute("data-id");
     };
+
+    function handleEditTodoClick(event) {
+        todoForm.removeEventListener('submit', handleSubmitNewTodo);
+        todoForm.addEventListener('submit', handleSubmitEditTodo);
+
+        const todoElement = event.target.parentElement;
+        const projectName = todoElement.dataset.projectName;
+        const id = todoElement.dataset.id;
+        const todo = app.getTodo(projectName, id);
+
+
+        // console.log(todo);
+        // console.log(todo.title);
+        // console.log(todo.dueDate);
+        formHeader.textContent = "Edit ToDo";
+        formTitle.value = todo.title
+        formDueDate.valueAsDate = todo.dueDate;
+        formProject.value = todo.projectName;
+        overlay.classList.add("active");
+        todoDialog.classList.add("active");
+        todoDialog.dataset.projectName = projectName;
+        todoDialog.dataset.id = id;
+        // console.log(app.getAllTodos());
+    }
+
+    function handleSubmitEditTodo(event) {
+        console.log("handleSubmitEditTodo");
+        event.preventDefault();
+
+        const title = event.target.elements.title.value;
+        const dueDate = event.target.elements['due-date'].value;
+        const projectName = event.target.elements.project.value;
+        const todo = {
+            title: title,
+            description: "temp description",
+            dueDate: dueDate,
+            priority: Priority.MEDIUM,
+            done: false,
+            projectName: projectName,
+        }
+
+        console.log(todoDialog.dataset.projectName, todoDialog.dataset.id, todo);
+        app.editTodo(todoDialog.dataset.projectName, todoDialog.dataset.id, todo);
+        overlay.classList.remove("active");
+        todoDialog.classList.remove("active");
+        todoDialog.removeAttribute("data-projectName");
+        todoDialog.removeAttribute("data-id");
+        defaultDueDate = new Date(dueDate);
+        updateScreen();
+    };
+
+    function handleDeleteTodoItem(event) {
+        const projectName = event.currentTarget.parentElement.dataset.projectName;
+        const id = event.currentTarget.parentElement.dataset.id;
+        console.log("proj:", projectName, typeof(projectName));
+        console.log("id:", id, typeof(id));
+
+        console.log("todos:", app.getProject("Habits").todos);
+        app.deleteTodo(projectName, id);
+        console.log("todos:", app.getProject("Habits").todos);
+        updateScreen();
+    }
 
     function handleNewProjectClick(event) {
         let form = document.createElement('form');
@@ -250,18 +336,6 @@ export default function ScreenController() {
         updateScreen();
     }
 
-    function handleDeleteTodoItem(event) {
-        const projectName = event.currentTarget.parentElement.dataset.projectName;
-        const id = event.currentTarget.parentElement.dataset.id;
-        console.log("proj:", projectName, typeof(projectName));
-        console.log("id:", id, typeof(id));
-
-        console.log("todos:", app.getProject("Habits").todos);
-        app.deleteTodo(projectName, id);
-        console.log("todos:", app.getProject("Habits").todos);
-        updateScreen();
-    }
-
     function handleDeleteProject(event) {
         let projectName = event.currentTarget.parentElement.dataset.name;
 
@@ -279,9 +353,10 @@ export default function ScreenController() {
         updateScreen();
     }
 
+    function clearTodoFormEventListeners() {
+    }
     newTodoButton.addEventListener('click', handleNewTodoClick);
-    newTodoForm.addEventListener('submit', handleSubmitNewTodo);
-    overlay.addEventListener('click', handleCancelNewTodo);
+    overlay.addEventListener('click', handleCancelTodoDialog);
     newProjectButton.addEventListener('click', handleNewProjectClick);
     allButton.addEventListener('click', handleAllClick);
 
