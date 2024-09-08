@@ -186,7 +186,6 @@ export default function ScreenController() {
         todoDialog.classList.add("active");
         formHeader.textContent = "New ToDo";
         formTitle.value = "";
-        // formDueDate.value = "";
         /* Use the currently selected project as the default
         project choice */
         if (selectedNavItem === NavItem.PROJECT) {
