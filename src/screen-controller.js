@@ -11,9 +11,9 @@ export default function ScreenController() {
     const todosDiv = document.querySelector("#todo-container");
     const titleDiv = document.querySelector("#title-container");
     const allButton = document.querySelector("#allTodos");
-    // const todayButton = document.querySelector("#today");
-    // const weekButton = document.querySelector("#week");
-    // const completedButton = document.querySelector("#completed");
+    const todayButton = document.querySelector("#today");
+    const weekButton = document.querySelector("#week");
+    const completedButton = document.querySelector("#completed");
     const newTodoButton = document.querySelector(".add-todo");
     const newProjectButton = document.querySelector(".add-project");
     const todoForm = document.querySelector("#todo-form");
@@ -34,6 +34,7 @@ export default function ScreenController() {
     });
 
     function updateScreen() {
+        console.log(app.getAllTodos());
         // clear divs
         projectsDiv.textContent = '';
         todosDiv.textContent = '';
@@ -88,10 +89,13 @@ export default function ScreenController() {
                 todos = app.getAllTodos();
                 break;
             case NavItem.TODAY:
+                todos = app.getTodaysTodos();
                 break;
             case NavItem.WEEK:
+                todos = app.getWeeksTodos();
                 break;
             case NavItem.COMPLETED:
+                todos = app.getCompletedTodos();
                 break;
             case NavItem.PROJECT:
                 todos = app.getProject(selectedProjectName).todos;
@@ -99,7 +103,9 @@ export default function ScreenController() {
             default:
                 return;
         }
+        console.log(todos);
 
+        todos.sort((a,b) => a.dateAdded - b.dateAdded);
         todos.forEach(todo => {
             todosDiv.appendChild(createTodoElement(todo));
         });
@@ -203,7 +209,7 @@ export default function ScreenController() {
         const todo = {
             title: title,
             description: "temp description",
-            dueDate: dueDate,
+            dueDate: new Date(dueDate),
             priority: Priority.MEDIUM,
             done: false,
             projectName: projectName,
@@ -251,7 +257,7 @@ export default function ScreenController() {
         const todo = {
             title: title,
             description: "temp description",
-            dueDate: dueDate,
+            dueDate: new Date(dueDate),
             priority: Priority.MEDIUM,
             done: false,
             projectName: projectName,
@@ -353,12 +359,30 @@ export default function ScreenController() {
         updateScreen();
     }
 
+    function handleTodayClick() {
+        selectedNavItem = NavItem.TODAY;
+        updateScreen();
+    }
+
+    function handleWeekClick() {
+        selectedNavItem = NavItem.WEEK;
+        updateScreen();
+    }
+
+    function handleCompletedClick() {
+        selectedNavItem = NavItem.COMPLETED;
+        updateScreen();
+    }
+
     function clearTodoFormEventListeners() {
     }
     newTodoButton.addEventListener('click', handleNewTodoClick);
     overlay.addEventListener('click', handleCancelTodoDialog);
     newProjectButton.addEventListener('click', handleNewProjectClick);
     allButton.addEventListener('click', handleAllClick);
+    todayButton.addEventListener('click', handleTodayClick);
+    weekButton.addEventListener('click', handleWeekClick);
+    completedButton.addEventListener('click', handleCompletedClick);
 
     // Initial render
     updateScreen();

@@ -6,6 +6,7 @@ export default class Todo {
         this.priority = priority;
         this.done = done;
         this.projectName = projectName
+        this.dateAdded = new Date();
     }
 
     edit(todoJSON) {

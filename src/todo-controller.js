@@ -1,5 +1,6 @@
 import Project from './project.js'
 import Todo from './todo.js'
+import { isToday, addWeeks, isWithinInterval, startOfDay, endOfDay } from 'date-fns';
 
 export default function TodoManager() {
     const projects = []
@@ -108,9 +109,30 @@ export default function TodoManager() {
         return todos;
     }
 
+    const getTodaysTodos = () => {
+        let todos = getAllTodos();
+        todos = todos.filter(todo => isToday(todo.dueDate));
+        return todos;
+    }
+
+    const getWeeksTodos = () => {
+        let todos = getAllTodos();
+        let today = startOfDay(new Date());
+        let oneWeek = endOfDay(addWeeks(today, 1));
+        todos = todos.filter(todo => isWithinInterval(todo.dueDate,
+            { start: today, end: oneWeek }));
+        return todos;
+    }
+
+    const getCompletedTodos = () => {
+        let todos = getAllTodos();
+        todos = todos.filter(todo => todo.done);
+        return todos;
+    }
+
     return {
-        addProject, deleteProject, getProjects, addTodo,
-        deleteTodo, getProject, getAllTodos, getTodo,
-        editTodo
+        addProject, deleteProject, getProjects, addTodo, deleteTodo,
+        getProject, getAllTodos, getTodo, editTodo, getTodaysTodos,
+        getWeeksTodos, getCompletedTodos
     };
 }
