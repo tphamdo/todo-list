@@ -91,10 +91,6 @@ nav {
   width: 30px;
 }
 
-.add-project:hover svg{
-  color: blue;
-}
-
 #projects-container {
   display: flex;
   flex-direction: column;
