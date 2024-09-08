@@ -251,9 +251,13 @@ input[type="submit"] {
   color: white;
 }
 
+input[type=checkbox] {
+    transform: scale(1.5);
+}
+
 .todo-item {
   display: flex;
-  gap: 12px;
+  gap: 16px;
   padding: 0 4px;
   align-items: center;
   margin-bottom: 4px;
@@ -272,4 +276,3 @@ input[type="submit"] {
 .todo-item.done .title {
   text-decoration: line-through;
 }
-
