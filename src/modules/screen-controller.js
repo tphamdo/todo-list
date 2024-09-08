@@ -35,7 +35,6 @@ export default function ScreenController() {
     });
 
     function updateScreen() {
-        console.log(app.getAllTodos());
         // clear divs
         projectsDiv.textContent = '';
         todosDiv.textContent = '';
@@ -104,7 +103,6 @@ export default function ScreenController() {
             default:
                 return;
         }
-        console.log(todos);
 
         todos.sort((a,b) => a.dateAdded - b.dateAdded);
         todos.forEach(todo => {
