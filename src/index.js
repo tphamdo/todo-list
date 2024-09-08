@@ -1,4 +1,4 @@
 import "./styles.css"
-import ScreenController from "./screen-controller.js"
+import ScreenController from "./modules/screen-controller.js"
 
 ScreenController();

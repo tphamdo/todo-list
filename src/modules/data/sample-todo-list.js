@@ -71,6 +71,14 @@ const todoList = [
         done: false,
         projectName: "The Odin Project"
     },
+    {
+        title: "Video Call Jules",
+        description: "",
+        dueDate: today,
+        priority: Priority.HIGH,
+        done: true,
+        projectName: "Habits",
+    },
 ];
 
 export default todoList
