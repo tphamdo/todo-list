@@ -3,6 +3,7 @@ import todoList from "./data/sample-todo-list.js";
 import NavItem from "./enums/nav-item.js";
 import Priority from "./enums/priority.js";
 import { format } from "date-fns";
+import { trashSvg, editSvg } from "./svgs.js";
 
 export default function ScreenController() {
     const app = TodoController();
@@ -130,10 +131,10 @@ export default function ScreenController() {
         title.classList.add("title");
         dueDate.textContent = format(todo.dueDate, "MM/dd/yyyy");
         dueDate.classList.add("due-date");
-        edit.textContent = "E";
+        edit.innerHTML = editSvg;
         edit.addEventListener('click', handleEditTodoClick);
         edit.classList.add("edit");
-        remove.textContent = "R";
+        remove.innerHTML = trashSvg;
         remove.addEventListener('click', handleDeleteTodoItem);
         remove.classList.add("remove");
         div.appendChild(done);
@@ -233,13 +234,13 @@ export default function ScreenController() {
         todoForm.removeEventListener('submit', handleSubmitNewTodo);
         todoForm.addEventListener('submit', handleSubmitEditTodo);
 
-        const todoElement = event.target.parentElement;
+        const todoElement = event.currentTarget.parentElement;
         const projectName = todoElement.dataset.projectName;
         const id = todoElement.dataset.id;
         const todo = app.getTodo(projectName, id);
 
         formHeader.textContent = "Edit ToDo";
-        formTitle.value = todo.title
+        formTitle.value = todo.title;
         formDueDate.valueAsDate = todo.dueDate;
         formProject.value = todo.projectName;
         overlay.classList.add("active");

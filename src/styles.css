@@ -266,17 +266,22 @@ input[type="submit"] {
 }
 
 .todo-item {
-  border: 1px solid black;
+  /* border: 1px solid black; */
   display: flex;
   gap: 12px;
   padding: 0 4px;
+  align-items: center;
+  margin-bottom: 4px;
+  max-width: 700px;
 
   & .due-date {
     margin-left: auto;
   }
 
-  & button {
-    background-color: red;
+  & button svg{
+    /* background-color: red; */
+    height: 20px;
+    width: 20px;
   }
 }
 
