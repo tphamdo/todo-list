@@ -86,7 +86,6 @@ export default function ScreenController() {
         switch(selectedNavItem) {
             case NavItem.ALL:
                 todos = app.getAllTodos();
-                console.log(todos);
                 break;
             case NavItem.TODAY:
                 break;
@@ -108,16 +107,21 @@ export default function ScreenController() {
 
     function createTodoElement(todo) {
         const div = document.createElement('div');
+        const done = document.createElement('input');
         const title = document.createElement('p');
         const dueDate = document.createElement('p');
         const remove = document.createElement('button');
         const edit = document.createElement('button');
 
-        // console.log(todo);
         div.classList.add("todo-item");
+        if (todo.done) div.classList.add("done");
         div.dataset.projectName = todo.projectName;
         div.dataset.id = todo.id;
+        done.setAttribute("type", "checkbox");
+        done.checked = todo.done;
+        done.addEventListener('change', handleTodoDoneStatusChange);
         title.textContent = todo.title;
+        title.classList.add("title");
         dueDate.textContent = format(todo.dueDate, "MM/dd/yyyy");
         dueDate.classList.add("due-date");
         edit.textContent = "E";
@@ -126,6 +130,7 @@ export default function ScreenController() {
         remove.textContent = "R";
         remove.addEventListener('click', handleDeleteTodoItem);
         remove.classList.add("remove");
+        div.appendChild(done);
         div.appendChild(title);
         div.appendChild(dueDate);
         div.appendChild(edit);
@@ -227,10 +232,6 @@ export default function ScreenController() {
         const id = todoElement.dataset.id;
         const todo = app.getTodo(projectName, id);
 
-
-        // console.log(todo);
-        // console.log(todo.title);
-        // console.log(todo.dueDate);
         formHeader.textContent = "Edit ToDo";
         formTitle.value = todo.title
         formDueDate.valueAsDate = todo.dueDate;
@@ -239,11 +240,9 @@ export default function ScreenController() {
         todoDialog.classList.add("active");
         todoDialog.dataset.projectName = projectName;
         todoDialog.dataset.id = id;
-        // console.log(app.getAllTodos());
     }
 
     function handleSubmitEditTodo(event) {
-        console.log("handleSubmitEditTodo");
         event.preventDefault();
 
         const title = event.target.elements.title.value;
@@ -258,7 +257,6 @@ export default function ScreenController() {
             projectName: projectName,
         }
 
-        console.log(todoDialog.dataset.projectName, todoDialog.dataset.id, todo);
         app.editTodo(todoDialog.dataset.projectName, todoDialog.dataset.id, todo);
         overlay.classList.remove("active");
         todoDialog.classList.remove("active");
@@ -271,12 +269,14 @@ export default function ScreenController() {
     function handleDeleteTodoItem(event) {
         const projectName = event.currentTarget.parentElement.dataset.projectName;
         const id = event.currentTarget.parentElement.dataset.id;
-        console.log("proj:", projectName, typeof(projectName));
-        console.log("id:", id, typeof(id));
-
-        console.log("todos:", app.getProject("Habits").todos);
         app.deleteTodo(projectName, id);
-        console.log("todos:", app.getProject("Habits").todos);
+        updateScreen();
+    }
+
+    function handleTodoDoneStatusChange(event) {
+        const projectName = event.currentTarget.parentElement.dataset.projectName;
+        const id = event.currentTarget.parentElement.dataset.id;
+        app.editTodo(projectName, id, { done: this.checked });
         updateScreen();
     }
 

@@ -280,3 +280,7 @@ input[type="submit"] {
   }
 }
 
+.todo-item.done .title {
+  text-decoration: line-through;
+}
+
