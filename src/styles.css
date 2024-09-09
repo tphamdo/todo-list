@@ -2,7 +2,9 @@
  * Css Reset
  */
 
-*, *::before, *::after {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
 }
 
@@ -15,37 +17,50 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-img, picture, video, canvas, svg {
+img,
+picture,
+video,
+canvas,
+svg {
   display: block;
   max-width: 100%;
 }
 
-input, button, textarea, select {
+input,
+button,
+textarea,
+select {
   font: inherit;
 }
 
-p, h1, h2, h3, h4, h5, h6 {
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   overflow-wrap: break-word;
 }
 
-#root, #__next {
+#root,
+#__next {
   isolation: isolate;
 }
-
 
 /*
  * Custom Styling
  */
 
 :root {
-  --light-grey: #F7F7F7;
+  --light-grey: #f7f7f7;
   --black: #000000;
   --navbar-width: 350px;
   --header-height: 90px;
 }
 
 body {
-  font-family: 'Roboto', sans-serif, serif;
+  font-family: "Roboto", sans-serif, serif;
   font-size: 24px;
   height: 100vh;
   width: 100vw;
@@ -217,7 +232,9 @@ button.add-todo {
     display: flex;
     flex-direction: column;
 
-    & .header, input, select {
+    & .header,
+    input,
+    select {
       margin-bottom: 12px;
     }
   }
@@ -229,7 +246,8 @@ button.add-todo {
   transition: 0.2s ease-in-out;
 }
 
-input, select {
+input,
+select {
   box-shadow: none;
   border-style: solid;
   outline: 0;
@@ -243,7 +261,8 @@ select {
   height: 46px;
 }
 
-input:focus, select:focus {
+input:focus,
+select:focus {
   border: 2px solid black;
 }
 
@@ -252,8 +271,8 @@ input[type="submit"] {
   color: white;
 }
 
-input[type=checkbox] {
-    transform: scale(1.5);
+input[type="checkbox"] {
+  transform: scale(1.5);
 }
 
 .todo-item {
@@ -268,7 +287,7 @@ input[type=checkbox] {
     margin-left: auto;
   }
 
-  & button svg{
+  & button svg {
     height: 30px;
     width: 30px;
   }

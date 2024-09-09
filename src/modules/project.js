@@ -1,38 +1,40 @@
 export default class Project {
-    #todos = [];
-    #nextTodoId = 0;
+  #todos = [];
+  #nextTodoId = 0;
 
-    constructor(name) {
-        this.name = name;
-    }
+  constructor(name) {
+    this.name = name;
+  }
 
-    addTodo(todo) {
-        if (!todo) return;
-        let todoWithId = Object.assign(todo, { id: this.#nextTodoId++ })
-        this.#todos.push(todoWithId);
-    }
+  addTodo(todo) {
+    if (!todo) return;
+    let todoWithId = Object.assign(todo, { id: this.#nextTodoId++ });
+    this.#todos.push(todoWithId);
+  }
 
-    deleteTodo(todoId) {
-        if (!todoId && todoId !== 0) return;
+  deleteTodo(todoId) {
+    if (!todoId && todoId !== 0) return;
 
-        let idx = this.#todos.findIndex(t => t.id == todoId)
+    let idx = this.#todos.findIndex((t) => t.id == todoId);
 
-        // break if todo is not found
-        if (idx === -1) return;
+    // break if todo is not found
+    if (idx === -1) return;
 
-        this.#todos.splice(idx, 1);
-    }
+    this.#todos.splice(idx, 1);
+  }
 
-    getTodo(todoId) {
-        if (!todoId && todoId !== 0) return null;
+  getTodo(todoId) {
+    if (!todoId && todoId !== 0) return null;
 
-        let idx = this.#todos.findIndex(t => t.id == todoId)
+    let idx = this.#todos.findIndex((t) => t.id == todoId);
 
-        // return null if todo is not found
-        if (idx === -1) return null;
+    // return null if todo is not found
+    if (idx === -1) return null;
 
-        return this.#todos[idx];
-    }
+    return this.#todos[idx];
+  }
 
-    get todos() { return this.#todos; }
+  get todos() {
+    return this.#todos;
+  }
 }
