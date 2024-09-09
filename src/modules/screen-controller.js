@@ -121,7 +121,7 @@ export default function ScreenController() {
         done.addEventListener('change', handleTodoDoneStatusChange);
         title.textContent = todo.title;
         title.classList.add("title");
-        dueDate.textContent = todo.dueDate;
+        dueDate.textContent = format(todo.dueDate, "MM/dd/yyyy");
         dueDate.classList.add("due-date");
         edit.innerHTML = editSvg;
         edit.addEventListener('click', handleEditTodoClick);
