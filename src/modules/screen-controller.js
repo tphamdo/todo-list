@@ -1,6 +1,5 @@
 import TodoController from "./todo-controller.js";
 import NavItem from "./enums/nav-item.js";
-import Priority from "./enums/priority.js";
 import { format } from "date-fns";
 import { trashSvg, editSvg } from "./svgs.js";
 
@@ -201,9 +200,7 @@ export default function ScreenController() {
         const projectName = event.target.elements.project.value;
         const todo = {
             title: title,
-            description: "",
             dueDate: new Date(dueDate + 'T23:59:59'),
-            priority: Priority.MEDIUM,
             done: false,
             projectName: projectName,
         }
