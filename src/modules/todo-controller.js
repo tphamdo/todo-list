@@ -47,6 +47,7 @@ export default function TodoManager() {
         if (idx === -1) return;
 
         projects.splice(idx, 1);
+        updateStorage();
     }
 
     const addTodo = function(todoJSON) {
