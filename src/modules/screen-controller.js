@@ -24,7 +24,6 @@ export default function ScreenController() {
     const formDueDate = document.querySelector("#todo-form #due-date");
     const formProject = document.querySelector("#todo-form #project");
 
-    let defaultDueDate = new Date()
     let selectedNavItem = NavItem.ALL;
     let selectedProjectName = null;
 
@@ -39,7 +38,6 @@ export default function ScreenController() {
 
         updateProjects();
         updateContent();
-        formDueDate.valueAsDate = defaultDueDate;
     }
 
     function updateContent() {
@@ -124,7 +122,7 @@ export default function ScreenController() {
         done.addEventListener('change', handleTodoDoneStatusChange);
         title.textContent = todo.title;
         title.classList.add("title");
-        dueDate.textContent = format(todo.dueDate, "MM/dd/yyyy");
+        dueDate.textContent = todo.dueDate;
         dueDate.classList.add("due-date");
         edit.innerHTML = editSvg;
         edit.addEventListener('click', handleEditTodoClick);
@@ -203,8 +201,8 @@ export default function ScreenController() {
         const projectName = event.target.elements.project.value;
         const todo = {
             title: title,
-            description: "temp description",
-            dueDate: new Date(dueDate),
+            description: "",
+            dueDate: new Date(dueDate + 'T23:59:59'),
             priority: Priority.MEDIUM,
             done: false,
             projectName: projectName,
@@ -213,7 +211,6 @@ export default function ScreenController() {
         app.addTodo(todo);
         overlay.classList.remove("active");
         todoDialog.classList.remove("active");
-        defaultDueDate = new Date(dueDate);
         updateScreen();
     }
 
@@ -235,7 +232,7 @@ export default function ScreenController() {
 
         formHeader.textContent = "Edit ToDo";
         formTitle.value = todo.title;
-        formDueDate.valueAsDate = todo.dueDate;
+        formDueDate.valueAsDate = new Date(todo.dueDate - todo.dueDate.getTimezoneOffset() * 60 * 1000);
         formProject.value = todo.projectName;
         overlay.classList.add("active");
         todoDialog.classList.add("active");
@@ -251,10 +248,7 @@ export default function ScreenController() {
         const projectName = event.target.elements.project.value;
         const todo = {
             title: title,
-            description: "temp description",
-            dueDate: new Date(dueDate),
-            priority: Priority.MEDIUM,
-            done: false,
+            dueDate: new Date(dueDate + 'T00:00:00'),
             projectName: projectName,
         }
 
@@ -263,7 +257,6 @@ export default function ScreenController() {
         todoDialog.classList.remove("active");
         todoDialog.removeAttribute("data-projectName");
         todoDialog.removeAttribute("data-id");
-        defaultDueDate = new Date(dueDate);
         updateScreen();
     };
 

@@ -97,7 +97,6 @@ export default function TodoManager() {
 
         const targetProjectName = updatedTodoJSON.projectName;
         if (targetProjectName && curTodo.projectName !== targetProjectName) {
-            console.log("here");
             const targetProject = getProject(targetProjectName);
             const curProject = getProject(curTodo.projectName)
             if (!targetProject || !curProject) return;
