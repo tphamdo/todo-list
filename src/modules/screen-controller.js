@@ -361,7 +361,6 @@ export default function ScreenController() {
     updateScreen();
   }
 
-  function clearTodoFormEventListeners() {}
   newTodoButton.addEventListener("click", handleNewTodoClick);
   overlay.addEventListener("click", handleCancelTodoDialog);
   newProjectButton.addEventListener("click", handleNewProjectClick);
